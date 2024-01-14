@@ -3,7 +3,7 @@ import Navbar from "@/components/back-office/Navbar";
 import Sidebar from "@/components/back-office/Sidebar";
 import { useState } from "react";
 
-export default function layout({ children }) {
+export default function Layout({ children }) {
 
   const [showSidebar, setSidebar] = useState(false);
 
