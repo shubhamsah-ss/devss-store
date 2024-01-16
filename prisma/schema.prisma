@@ -1,0 +1,168 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// COUPON SCHEMA
+model Coupons {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  title      String
+  expiryDate DateTime
+  couponCode String
+  isActive   Boolean
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// BANNERS SCHEMA 
+model Banners {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  title    String
+  link     String
+  image    String[]
+  isActive Boolean
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// CATEGORIES SCHEMA
+model Categories {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  title       String
+  slug        String   @unique
+  image       String[] @default([])
+  description String?
+  isActive    Boolean
+
+  products Products[]
+
+  communities Communities[]
+
+  marketId String[]  @db.ObjectId
+  markets  Markets[] @relation(fields: [marketId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// MARKET SCHEMA
+model Markets {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  title       String
+  slug        String   @unique
+  image       String[] @default([])
+  description String?
+  isActive    Boolean
+
+  categoryId String[]     @db.ObjectId
+  categories Categories[] @relation(fields: [categoryId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// PRODUCT SCHEMA
+model Products {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  title        String
+  slug         String   @unique
+  description  String?
+  image        String[] @default([])
+  sku          String
+  barcode      String
+  productPrice Float
+  salePrice    Float
+  tags         String[]
+  isActive     Boolean
+
+  categoryId String     @db.ObjectId
+  categories Categories @relation(fields: [categoryId], references: [id])
+
+  userId String @unique @db.ObjectId
+  users  Users  @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// COMMUNITIES
+model Communities {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  title       String
+  description String?
+  slug        String   @unique
+  image       String[] @default([])
+  content     String?
+  isActive    Boolean
+
+  categoryId String     @db.ObjectId
+  categories Categories @relation(fields: [categoryId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// USER ROLES
+enum UserRole {
+  ADMIN
+  USER
+  FARMER
+  MODERATOR
+}
+
+model Users {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  name          String
+  password      String
+  email         String   @unique
+
+  emailVerified Boolean  @default(false)
+  role          UserRole @default(USER)
+
+  farmerProfile FarmerProfiles?
+
+  products Products[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// FARMERS SCHEMA
+model FarmerProfiles {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  name               String
+  phone              String
+  email              String
+  address            String
+  contactPerson      String?
+  contactPersonPhone String?
+  terms              String?
+  notes              String?
+  code               String
+  image              String[] @default([])
+  isActive           Boolean
+
+  userId String @unique @db.ObjectId
+  user   Users  @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  usersId   String   @db.ObjectId
+}

@@ -5,11 +5,14 @@ export async function makePostRequest(
   endpoint,
   data,
   resourceName,
-  reset
+  reset, 
+  redirect,
 ) {
+
+
   try {
     setLoading(true);
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+    const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL;
     const response = await fetch(`${baseUrl}/${endpoint}`, {
       method: "POST",
       headers: {
@@ -22,18 +25,43 @@ export async function makePostRequest(
         setLoading(false);
         toast.success(`New ${resourceName} created successfully`)
         reset()
-        
+        redirect()
     } else {
         setLoading(false);
-        toast.error("Something went wrong")
-        // if(response.status === 409) {
-        //     toast.error("The giving warehouse stock is NOT enough")
-        // } else {
-        //     toast.error("Something went wrong")
-        // }
+        if(response.status === 409) {
+          const { error } = await response.json();
+          console.log(response)
+            toast.error(error)
+        } else {
+          console.log("second:", response)
+            toast.error("Something went wrong...")
+        }
     }
   } catch (error) {
     setLoading(false)
+    toast.error(error.message)
     console.log(error)
+  }
+}
+
+export async function getData(endpoint) {
+
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL;
+
+    console.log(baseUrl+"/api/"+endpoint)
+
+   const response = await fetch(`${baseUrl}/api/${endpoint}`)
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch data. Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log("Received data:", data)
+    return data;
+
+  } catch (error) {
+    console.error("Error in getData:", error);
   }
 }

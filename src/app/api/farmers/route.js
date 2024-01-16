@@ -1,3 +1,4 @@
+import db from "@/lib/db";
 import { NextResponse } from "next/server";
 
 export async function POST(request) {
@@ -12,26 +13,31 @@ export async function POST(request) {
       terms,
       notes,
       code,
+      image,
       isActive,
     } = await request.json();
-    const newFarmer = {
-      name,
-      phone,
-      email,
-      address,
-      contactPerson,
-      contactPersonPhone,
-      terms,
-      notes,
-      code,
-      isActive,
-    };
+    const newFarmer = await db.farmers.create({
+      data: {
+        name,
+        phone,
+        email,
+        address,
+        contactPerson,
+        contactPersonPhone,
+        terms,
+        notes,
+        code,
+        image,
+        isActive,
+      },
+    });
     console.log(newFarmer);
     return NextResponse.json(newFarmer);
   } catch (error) {
     return NextResponse.json(
       {
-        error: "Failed to create Farmer",
+        message: "Failed to create Farmer",
+        error: error.message,
       },
       { status: 500 }
     );

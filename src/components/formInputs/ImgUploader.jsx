@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 
 const ImgUploader = ({
   label,
-  id,
+  name,
   file,
   setFile,
   className,
@@ -77,7 +77,7 @@ const ImgUploader = ({
         toast.error(error.message);
       }
     },
-    [file]
+    [file, maxSize]
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -109,7 +109,7 @@ const ImgUploader = ({
             {...getRootProps()}
             onClick={removeLastFile}
           >
-            <input id={id} {...getInputProps()} />
+            <input id={name} name={name} {...getInputProps()} />
             <Trash2 />
             Remove Image
           </button>
@@ -165,7 +165,7 @@ const ImgUploader = ({
         }`}
         {...getRootProps()}
       >
-        <input id={id} {...getInputProps()} />
+        <input name={name} id={name} {...getInputProps()} />
         {isDragActive ? (
           <p>Drop the image here...</p>
         ) : (
@@ -187,7 +187,7 @@ export default ImgUploader;
 const SingleImagePreview = ({ files }) => {
   return (
     <div
-      className={"block w-full rounded-md p-2 mx-auto dark:bg-slate-700 h-full"}
+      className={"block w-full rounded-md p-2 mx-auto h-full"}
     >
       {files.map((file, i) => (
         <Image

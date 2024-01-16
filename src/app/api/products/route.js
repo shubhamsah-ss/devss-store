@@ -11,8 +11,8 @@ export async function POST(request) {
       barcode,
       productPrice,
       salePrice,
-      category,
-      farmer,
+      categoryId,
+      farmerId,
       tags,
       isActive,
     } = await request.json();
@@ -25,8 +25,8 @@ export async function POST(request) {
       barcode,
       productPrice,
       salePrice,
-      category,
-      farmer,
+      categoryId,
+      farmerId,
       tags,
       isActive,
     };

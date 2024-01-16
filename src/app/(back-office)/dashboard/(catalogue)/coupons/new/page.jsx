@@ -6,11 +6,17 @@ import SubmitBtn from "@/components/formInputs/SubmitBtn";
 import { makePostRequest } from "@/lib/apiRequest";
 import { generateCouponCode } from "@/lib/generateCouponCode";
 import { Plus } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 const NewCoupon = () => {
   const [loading, setLoading] = useState(false);
+  const router = useRouter()
+
+  function redirect() {
+    router.push("/dashboard/coupons")
+  }
   const {
     register,
     reset,
@@ -26,7 +32,8 @@ const NewCoupon = () => {
   async function submitHandler(data) {
     const couponCode = generateCouponCode(data.title, data.expiryDate)
     data.couponCode = couponCode
-    makePostRequest(setLoading, "api/coupons", data, "Coupon", reset);
+    data.expiryDate = new Date(expiryDate).toISOString();
+    makePostRequest(setLoading, "api/coupons", data, "Coupon", reset, redirect);
   }
 
  

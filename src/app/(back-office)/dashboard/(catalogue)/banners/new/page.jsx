@@ -6,6 +6,7 @@ import ImgUploader from "@/components/formInputs/ImgUploader";
 import SubmitBtn from "@/components/formInputs/SubmitBtn";
 import { makePostRequest } from "@/lib/apiRequest";
 import { Plus } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -13,7 +14,11 @@ import toast from "react-hot-toast";
 const NewCategory = () => {
   const [file, setFile] = useState([]);
   const [loading, setLoading] = useState(false);
+  const router = useRouter()
 
+  function redirect() {
+    router.push("/dashboard/banners")
+  }
   const {
     register,
     reset,
@@ -29,7 +34,7 @@ const NewCategory = () => {
   async function submitHandler(data) {
     if (file) {
       data.image = file;
-      makePostRequest(setLoading, "api/banners", data, "Banner", reset);
+      makePostRequest(setLoading, "api/banners", data, "Banner", reset, redirect);
       setFile([]);
     } else toast.error("No image is selected");
   }
@@ -78,7 +83,7 @@ const NewCategory = () => {
 
         <ImgUploader
           label="Banner Image"
-          id={"image"}
+          name={"image"}
           file={file}
           setFile={setFile}
         />
@@ -89,10 +94,10 @@ const NewCategory = () => {
             title={
               <div className="inline-flex items-center">
                 <Plus />
-                Create Category
+                Create Banner
               </div>
             }
-            loadingTitle={"Creating Category! Please wait..."}
+            loadingTitle={"Creating Banner! Please wait..."}
           />
         </div>
       </form>

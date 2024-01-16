@@ -1,9 +1,28 @@
-import React from 'react'
+import CustomDataTable from "@/components/back-office/CustomDataTable";
+import Heading from "@/components/back-office/Heading";
+import TableActionBtns from "@/components/back-office/TableActionBtns";
 
-const page = () => {
+const Categories = () => {
   return (
-    <div>Community</div>
-  )
-}
+    <div className="space-y-10">
 
-export default page
+      {/* HEADER */}
+      <Heading title={"Community Training"} />
+
+      {/* ACTIONS BUTTONS */}
+      <TableActionBtns
+      href={"/dashboard/community/new"}
+      linkTitle={"Add Training"}
+      />
+      
+      {/* TABLE */}
+      <CustomDataTable 
+      tableHeading={"Table"} 
+      searchable={true}
+      checkboxselection={true} 
+      />
+    </div>
+  );
+};
+
+export default Categories;

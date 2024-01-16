@@ -1,4 +1,4 @@
-export function generatUserCode(prefix, fullName) {
+export function generateUserCode(prefix, fullName) {
   const initial = fullName
     .split(" ")
     .map((name) => name[0])

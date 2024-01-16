@@ -2,19 +2,20 @@
 
 import { Plus, X } from "lucide-react";
 import { useState } from "react";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 export const TextInput = ({
   label,
   name,
-  className = "sm:col-span-2",
+  className = "sm:col-span-2 relative",
   type,
   error,
   register,
+  required = false,
   ...rest
 }) => {
-
   const [showPassword, setShowPassword] = useState(false);
-
   return (
     <div className={className}>
       <label
@@ -24,21 +25,37 @@ export const TextInput = ({
       >
         {label}
       </label>
+      {type === "password" && (
+        <button
+          type="button"
+          onClick={() => setShowPassword((prev) => !prev)}
+          className={`absolute right-0 ${
+            error[name] ? "bottom-9" : "bottom-3"
+          } px-3 text-gray-500 text-xs font-medium`}
+        >
+          {showPassword ? "Hide" : "Show"}
+        </button>
+      )}
       <input
-        type={showPassword ? "text": type }
+        type={showPassword ? "text" : type}
         name={name}
         id={name}
-        {...register(name)}
-        {...rest}
-        className="block w-full rounded-md border-0 py-2
-    shadow-sm ring-1 ring-inset ring-slate-300 dark:ring-slate-500
-    placeholder:text-gray-500
-    focus:ring-2 focus:ring-yellow-600 dark:focus:ring-green-600
+        {...register(name, {
+          required: { value: required, message: `${label} field is required` },
+        })}
+        className={`block w-full rounded-md py-2 border-0
+        shadow-sm ring-1 ring-inset ${
+          error[name] ? "ring-red-600" : " ring-slate-300 dark:ring-slate-500"
+        }
+        placeholder:text-gray-500
+        focus:ring-2 focus:ring-yellow-600 dark:focus:ring-green-600
     dark:bg-slate-700
-    "
+    `}
+        {...rest}
       />
-      {type === 'password' && <button type="button" onClick={() => setShowPassword(prev => !prev)} className="text-gray-500 text-xs font-medium">{showPassword ? "Hide password" : "Show password"}</button>}
-      {error[name] && <span className="text-sm text-red-600">{error}</span>}
+      {error[name] && (
+        <span className="text-sm text-red-600">{error[name].message}</span>
+      )}
     </div>
   );
 };
@@ -49,6 +66,7 @@ export const TextArea = ({
   className = "sm:col-span-2",
   error,
   register,
+  required = false,
   ...rest
 }) => {
   return (
@@ -63,16 +81,22 @@ export const TextArea = ({
       <textarea
         name={name}
         id={name}
+        {...register(name, {
+          required: { value: required, message: `${label} field is required` },
+        })}
+        className={`block w-full rounded-md py-2 border-0
+    shadow-sm ring-1 ring-inset ${
+      error[name] ? "ring-red-600" : " ring-slate-300 dark:ring-slate-500"
+    }
+    placeholder:text-gray-500
+    focus:ring-2 focus:ring-yellow-600 dark:focus:ring-green-600
+    dark:bg-slate-700
+    `}
         {...rest}
-        {...register(name)}
-        className="block w-full rounded-md border-0
-        shadow-sm ring-1 ring-inset ring-slate-300 dark:ring-slate-500
-        placeholder:text-gray-500
-        focus:ring-2 focus:ring-yellow-600 dark:focus:ring-green-600
-        dark:bg-slate-700
-        "
       />
-      {error[name] && <span className="text-sm text-red-600">{error}</span>}
+      {error[name] && (
+        <span className="text-sm text-red-600">{error[name].message}</span>
+      )}
     </div>
   );
 };
@@ -83,6 +107,7 @@ export const SelectInput = ({
   className = "sm:col-span-2",
   options = [],
   register,
+  required = false,
   multiple = false,
   ...rest
 }) => {
@@ -101,25 +126,31 @@ export const SelectInput = ({
           id={name}
           name={name}
           multiple={multiple}
-          className="block w-full rounded-md border-0 py-2
-    shadow-sm ring-1 ring-inset ring-slate-300 dark:ring-slate-500
-    placeholder:text-gray-500 focus:ring-inset
+          className={`block w-full rounded-md py-2 border-0
+    shadow-sm ring-1 ring-inset ${
+      error[name] ? "ring-red-600" : " ring-slate-300 dark:ring-slate-500"
+    }
+    placeholder:text-gray-500
     focus:ring-2 focus:ring-yellow-600 dark:focus:ring-green-600
     dark:bg-slate-700
-    sm:max-w-xs sm:text-sm sm:leading-6
-    "
-          {...register(name)}
+    `}
+          {...register(name, {
+            required: {
+              value: required,
+              message: `${label} field is required`,
+            },
+          })}
           {...rest}
         >
-          <option value="" disabled>
-            Select {name}
-          </option>
           {options.map((option, i) => (
             <option key={i} value={option.id}>
               {option.title}
             </option>
           ))}
         </select>
+        {error[name] && (
+          <span className="text-sm text-red-600">{error[name].message}</span>
+        )}
       </div>
     </div>
   );
@@ -277,6 +308,81 @@ export const Toggler = ({
           <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-0 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-yellow-600 dark:peer-checked:bg-green-600"></div>
         </label>
       </div>
+    </div>
+  );
+};
+
+export const TextEditor = ({
+  className = "sm:col-span-2",
+  label,
+  placeholder,
+  name,
+  value,
+  onChange,
+  ...rest
+}) => {
+  const modules = {
+    toolbar: [
+      [{ size: ["small", false, "large", "huge"] }],
+      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+      [{ font: [] }],
+      [{ align: [] }],
+      ["bold", "italic", "underline", "strike", "blockquote"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      [{ script: "sub" }, { script: "super" }],
+      [{ indent: "-1" }, { indent: "+1" }],
+      [{ color: [] }, { background: [] }],
+      ["link", "image"],
+      [{ "code-block": true }],
+      ["clean"],
+    ],
+  };
+
+  const formats = [
+    "header",
+    "background",
+    "color",
+    "font",
+    "code",
+    "size",
+    "script",
+    "bold",
+    "italic",
+    "underline",
+    "align",
+    "strike",
+    "blockquote",
+    "list",
+    "bullet",
+    "link",
+    "indent",
+    "image",
+    "formula",
+    "code-block",
+    "clean",
+  ];
+
+  return (
+    <div className={className}>
+      <label
+        htmlFor={name}
+        className="capitalize block text-md font-medium leading-6
+      dark:text-slate-400 mb-2"
+      >
+        {label}
+      </label>
+
+      <ReactQuill
+        id={name}
+        name={name}
+        theme="snow"
+        placeholder={placeholder}
+        modules={modules}
+        formats={formats}
+        value={value}
+        onChange={onChange}
+        {...rest}
+      />
     </div>
   );
 };

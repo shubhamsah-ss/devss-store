@@ -17,13 +17,6 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
-class Market {
-  constructor(id) {
-    this.id = id;
-    this.title = `Market ${this.id}`;
-  }
-}
-
 class Farmer {
   constructor(id) {
     this.id = id;
@@ -44,16 +37,13 @@ const NewProduct = () => {
 
   const [tags, setTags] = useState([]);
 
-  const markets = [];
   const category = [];
   const farmer = [];
 
   for (let i = 0; i < 5; i++) {
-    const obj = new Market(i + 1);
     const obj2 = new Category(i + 1);
     const obj3 = new Farmer(i + 1);
 
-    markets.push(obj);
     category.push(obj2);
     farmer.push(obj3);
   }
@@ -67,7 +57,10 @@ const NewProduct = () => {
   } = useForm({
     defaultValues: {
       isActive: true,
-    }
+      markets: [],
+      farmer: [],
+      category: [],
+    },
   });
 
   async function submitHandler(data) {
@@ -96,6 +89,15 @@ const NewProduct = () => {
         "
       >
         <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
+          <Toggler
+            name={"isActive"}
+            register={register}
+            className="sm:col-span-2 flex flex-col items-end"
+            heading="Publish Your Product"
+            toggleLabels={["Active", "Draft"]}
+            watch={watch}
+          />
+
           <TextInput
             label={"Product Title/Name"}
             name={"title"}
@@ -105,15 +107,6 @@ const NewProduct = () => {
             error={errors}
             placeholder={"Type the product title"}
             className="w-full"
-          />
-
-          <Toggler
-            name={"isActive"}
-            register={register}
-            className="flex flex-col justify-between items-end"
-            heading="Publish Your Product"
-            toggleLabels={["Active", "Draft"]}
-            watch={watch}
           />
 
           <TextInput
@@ -139,7 +132,7 @@ const NewProduct = () => {
           />
 
           <TextInput
-            label={"Product Price (Before discout)"}
+            label={"Product Price (Before discount)"}
             name={"productPrice"}
             type={"number"}
             register={register}
@@ -162,7 +155,7 @@ const NewProduct = () => {
 
           <SelectInput
             label={"Select Farmer"}
-            name={"farmer"}
+            name={"farmerId"}
             register={register}
             required={true}
             options={farmer}
@@ -171,7 +164,7 @@ const NewProduct = () => {
 
           <SelectInput
             label={"Select Category"}
-            name={"category"}
+            name={"categoryId"}
             register={register}
             required={true}
             options={category}
@@ -199,7 +192,7 @@ const NewProduct = () => {
 
         <ImgUploader
           label="Product Image"
-          id={"image"}
+          name={"image"}
           file={file}
           setFile={setFile}
           multiple={true}

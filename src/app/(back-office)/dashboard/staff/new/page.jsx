@@ -8,7 +8,7 @@ import {
 } from "@/components/formInputs/CustomInputs";
 import SubmitBtn from "@/components/formInputs/SubmitBtn";
 import { makePostRequest } from "@/lib/apiRequest";
-import { generatUserCode } from "@/lib/generateUserCode";
+import { generateUserCode } from "@/lib/generateUserCode";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -28,10 +28,10 @@ const NewStaff = () => {
   });
 
   async function submitHandler(data) {
-    const code = generatUserCode("DEVSS", data.name);
+    const code = generateUserCode("DSMN", data.name);
     data.code = code;
 
-    makePostRequest(setLoading, "api/staff", data, "Staff", reset);
+    makePostRequest(setLoading, "api/staffs", data, "Staff", reset);
   }
 
   return (
@@ -66,9 +66,20 @@ const NewStaff = () => {
           />
 
           <TextInput
-            label={"Password"}
-            name={"password"}
-            type={"password"}
+            label={"NIN (ID Number)"}
+            name={"nin"}
+            type={"text"}
+            register={register}
+            error={errors}
+            required={true}
+            placeholder={"Type password"}
+            className="w-full"
+          />
+
+          <TextInput
+            label={"Date of Birth"}
+            name={"dob"}
+            type={"date"}
             register={register}
             error={errors}
             required={true}

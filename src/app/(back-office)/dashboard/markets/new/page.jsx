@@ -2,6 +2,7 @@
 
 import FormHeader from "@/components/back-office/FormHeader";
 import {
+  SelectInput,
   TextArea,
   TextInput,
   Toggler,
@@ -13,11 +14,12 @@ import { generateSlug } from "@/lib/generateSlug";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
 
 const NewMarket = () => {
   const [file, setFile] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const categories = [];
 
   const {
     register,
@@ -28,18 +30,16 @@ const NewMarket = () => {
   } = useForm({
     defaultValues: {
       isActive: true,
-    }
+    },
   });
 
   async function submitHandler(data) {
     const slug = generateSlug(data.title);
     data.slug = slug;
 
-    if (file) {
-      data.image = file;
-      makePostRequest(setLoading, "api/markets", data, "Market", reset);
-      setFile([]);
-    } else toast.error("No image is selected");
+    data.image = file;
+    makePostRequest(setLoading, "api/markets", data, "Market", reset);
+    setFile([]);
   }
 
   return (
@@ -62,13 +62,22 @@ const NewMarket = () => {
             required={true}
             error={errors}
             placeholder={"Type the market title"}
+            className="w-full"
+          />
+
+          <SelectInput
+            name={"categoryId"}
+            register={register}
+            label={"Select Categories"}
+            className="w-full"
+            options={categories}
+            multiple={true}
           />
 
           <TextArea
             label={"Market Description"}
             name={"description"}
             register={register}
-            required={true}
             error={errors}
             placeholder="Type market description"
             rows="5"
@@ -85,9 +94,8 @@ const NewMarket = () => {
         </div>
 
         <ImgUploader
-          className="mt-5"
           label="Market Logo"
-          id={"image"}
+          name={"image"}
           file={file}
           setFile={setFile}
         />
