@@ -20,7 +20,7 @@ export const TextInput = ({
     <div className={className}>
       <label
         htmlFor={name}
-        className="capitalize block text-md font-medium leading-6
+        className="capitalize text-md font-medium leading-6
       dark:text-slate-400 mb-2"
       >
         {label}
@@ -43,7 +43,7 @@ export const TextInput = ({
         {...register(name, {
           required: { value: required, message: `${label} field is required` },
         })}
-        className={`block w-full rounded-md py-2 border-0
+        className={` w-full rounded-md py-2 border-0
         shadow-sm ring-1 ring-inset ${
           error[name] ? "ring-red-600" : " ring-slate-300 dark:ring-slate-500"
         }
@@ -73,7 +73,7 @@ export const TextArea = ({
     <div className={className}>
       <label
         htmlFor={name}
-        className="capitalize block text-md font-medium leading-6
+        className="capitalize  text-md font-medium leading-6
           dark:text-slate-400 mb-2"
       >
         {label}
@@ -84,7 +84,7 @@ export const TextArea = ({
         {...register(name, {
           required: { value: required, message: `${label} field is required` },
         })}
-        className={`block w-full rounded-md py-2 border-0
+        className={` w-full rounded-md py-2 border-0
     shadow-sm ring-1 ring-inset ${
       error[name] ? "ring-red-600" : " ring-slate-300 dark:ring-slate-500"
     }
@@ -107,6 +107,7 @@ export const SelectInput = ({
   className = "sm:col-span-2",
   options = [],
   register,
+  error,
   required = false,
   multiple = false,
   ...rest
@@ -115,7 +116,7 @@ export const SelectInput = ({
     <div className={className}>
       <label
         htmlFor={name}
-        className="capitalize block text-md font-medium leading-6
+        className="capitalize  text-md font-medium leading-6
       dark:text-slate-400 mb-2"
       >
         {label}
@@ -126,7 +127,7 @@ export const SelectInput = ({
           id={name}
           name={name}
           multiple={multiple}
-          className={`block w-full rounded-md py-2 border-0
+          className={` w-full rounded-md py-2 border-0
     shadow-sm ring-1 ring-inset ${
       error[name] ? "ring-red-600" : " ring-slate-300 dark:ring-slate-500"
     }
@@ -207,7 +208,7 @@ export const AddArrayItem = ({
               name={name}
               value={item}
               onChange={(e) => setItem(e.target.value)}
-              className="block w-full ps-10 p-2.5 rounded-md border-0 py-2
+              className=" w-full ps-10 p-2.5 rounded-md border-0 py-2
                     shadow-sm ring-1 ring-inset ring-slate-300 dark:ring-slate-500
                     placeholder:text-gray-500
                     focus:ring-2 focus:ring-yellow-600 dark:focus:ring-green-600
@@ -284,7 +285,7 @@ export const Toggler = ({
     <div className={className}>
       <div className="">
         <h2
-          className="capitalize block text-md font-medium leading-6
+          className="capitalize  text-md font-medium leading-6
         dark:text-slate-400"
         >
           {heading}
@@ -333,7 +334,7 @@ export const TextEditor = ({
       [{ indent: "-1" }, { indent: "+1" }],
       [{ color: [] }, { background: [] }],
       ["link", "image"],
-      [{ "code-block": true }],
+      [{ "code-": true }],
       ["clean"],
     ],
   };
@@ -358,7 +359,7 @@ export const TextEditor = ({
     "indent",
     "image",
     "formula",
-    "code-block",
+    "code-",
     "clean",
   ];
 
@@ -366,7 +367,7 @@ export const TextEditor = ({
     <div className={className}>
       <label
         htmlFor={name}
-        className="capitalize block text-md font-medium leading-6
+        className="capitalize  text-md font-medium leading-6
       dark:text-slate-400 mb-2"
       >
         {label}

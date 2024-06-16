@@ -1,6 +1,8 @@
 "use client";
 import Data from "@/data/data.json";
 import { useEffect, useState } from "react";
+import Pagination from "./Pagination";
+
 
 const CustomDataTable = ({
   tableHeading,
@@ -13,10 +15,7 @@ const CustomDataTable = ({
   searchable,
   ...rest
 }) => {
-  const [data, setData] = useState({
-    docs: [],
-    totalDocs: 0,
-  });
+  const [data, setData] = useState([])
 
   const [loading, setLoading] = useState(false);
   const [pageSize, setPageSize] = useState(25);
@@ -189,37 +188,7 @@ const CustomDataTable = ({
           </select>
         </span>
 
-        <ul className="inline-flex -space-x-px rtl:space-x-reverse text-xs h-8">
-          <li>
-            <button
-              onClick={() => setCurrentPage(currentPage - 1)}
-              disabled={currentPage === 1}
-              className="disabled:select-none flex items-center justify-center px-3 h-8 ms-0 leading-tight dark:text-gray-400 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700  dark:hover:bg-gray-700 dark:hover:text-white"
-            >
-              <small>{"<"}</small>
-            </button>
-          </li>
-          {Array.from({ length: 5 }, (_, i) => (
-            <li key={i}>
-              <button
-                disabled={currentPage === i + 1}
-                onClick={() => setCurrentPage(i + 1)}
-                className="disabled:bg-green-600 disabled:text-white  flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-              >
-                {i + 1}
-              </button>
-            </li>
-          ))}
-          <li>
-            <button
-              onClick={() => setCurrentPage(currentPage + 1)}
-              disabled={currentPage === totalPages}
-              className="disabled:select-none flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-            >
-              <small>{">"}</small>
-            </button>
-          </li>
-        </ul>
+        <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} totalPages={totalPages} />
       </nav>
     </div>
   );

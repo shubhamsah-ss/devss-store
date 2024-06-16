@@ -78,16 +78,23 @@ model Markets {
 model Products {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  title        String
-  slug         String   @unique
-  description  String?
-  image        String[] @default([])
-  sku          String
-  barcode      String
-  productPrice Float
-  salePrice    Float
-  tags         String[]
-  isActive     Boolean
+  title          String
+  slug           String   @unique
+  description    String?
+  image          String[] @default([])
+  sku            String?
+  barcode        String?
+  productPrice   Float
+  salePrice      Float
+  tags           String[]
+  isActive       Boolean
+  isWholesale    Boolean
+  productCode    String?
+  unit           String?
+  wholesalePrice Float
+  wholesaleQty   Int
+  productStock   Int
+  qty            Int
 
   categoryId String     @db.ObjectId
   categories Categories @relation(fields: [categoryId], references: [id])
@@ -128,9 +135,9 @@ enum UserRole {
 model Users {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  name          String
-  password      String
-  email         String   @unique
+  name     String
+  password String
+  email    String @unique
 
   emailVerified Boolean  @default(false)
   role          UserRole @default(USER)
@@ -158,11 +165,13 @@ model FarmerProfiles {
   code               String
   image              String[] @default([])
   isActive           Boolean
+  products           String[]
+  landSize           Float
+  mainCrop           String
 
   userId String @unique @db.ObjectId
   user   Users  @relation(fields: [userId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  usersId   String   @db.ObjectId
 }

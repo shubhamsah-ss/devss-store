@@ -18,7 +18,7 @@ export default function Layout({ children }) {
 
         {/* MAIN */}
         <main className={`p-5 dark:bg-slate-900 dark:text-slate-50 h-screen overflow-auto
-        pt-24 transition-all delay-150 ${showSidebar ? "md:ms-60" : "ms-0 md:ms-24"}`}>{children}</main>
+        pt-24 transition-all delay-150 ${showSidebar ? "md:ms-48" : "ms-0 md:ms-20"}`}>{children}</main>
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 "use client";
 
-import FormHeader from "@/components/back-office/FormHeader";
 import {
+  AddArrayItem,
   TextArea,
   TextInput,
   Toggler,
@@ -15,9 +15,10 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-const NewFarmerForm = () => {
+const NewFarmerForm = ({ user }) => {
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState([]);
+  const [products, setProducts] = useState([]);
 
   const router = useRouter();
 
@@ -34,6 +35,7 @@ const NewFarmerForm = () => {
   } = useForm({
     defaultValues: {
       isActive: false,
+      ...user,
     },
   });
 
@@ -41,8 +43,11 @@ const NewFarmerForm = () => {
     const code = generateUserCode("DEVSS", data.name);
     data.code = code;
     data.image = file;
-
-    makePostRequest(setLoading, "api/farmers", data, "Farmer", reset, redirect);
+    data.userId = user?.id;
+    data.products = products;
+    makePostRequest(setLoading, "api/farmers", data, "Farmer Profile", reset, redirect);
+    setFile([]);
+    setProducts([]);
   }
 
   return (
@@ -125,6 +130,33 @@ const NewFarmerForm = () => {
           error={errors}
           placeholder={"Type farmer's contact person's phone"}
           className="w-full"
+        />
+
+        <TextInput
+          label={"What is the size of your Land in Acres"}
+          name={"landSize"}
+          type={"number"}
+          register={register}
+          error={errors}
+          placeholder={"Type land size in acres"}
+          className="w-full"
+        />
+
+        <TextInput
+          label={"What is your main crop that you cultivate"}
+          name={"mainCrop"}
+          type={"tel"}
+          register={register}
+          error={errors}
+          placeholder={"Type your main crop"}
+          className="w-full"
+        />
+
+        <AddArrayItem
+          addTitle={"Products"}
+          items={products}
+          setItems={setProducts}
+          name={"crops"}
         />
 
         <TextArea

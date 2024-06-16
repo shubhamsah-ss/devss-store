@@ -77,8 +77,8 @@ const WeeklySalesCharts = () => {
   };
 
   return (
-    <div className="rounded-xl p-5 shadow-lg bg-slate-100 dark:bg-slate-800">
-      <h2 className="text-xl font-bold mb-5">Weekly Sales</h2>
+    <div className="rounded-xl p-5 shadow-lg bg-slate-100 dark:bg-slate-800 space-y-5">
+      <h2 className="text-xl font-bold">Weekly Sales</h2>
 
       {/* TABS */}
       <div className="p-4">

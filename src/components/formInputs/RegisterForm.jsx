@@ -8,7 +8,7 @@ import SubmitBtn from "./SubmitBtn";
 import Link from "next/link";
 import toast from "react-hot-toast";
 
-export default function RegisterForm({ formHeading, role }) {
+export default function RegisterForm({ formHeading, role="USER" }) {
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
@@ -42,7 +42,10 @@ export default function RegisterForm({ formHeading, role }) {
         setLoading(false);
         toast.success("User created successfully");
         reset();
-        // router.push("/login")
+
+        if(role === "USER") router.push("/")
+        if(role === "FARMER") router.push(`/onboarding/${responseData.id}`)
+
       } else {
         setLoading(false);
         if (response.status === 409) {

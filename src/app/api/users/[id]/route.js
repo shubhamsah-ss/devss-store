@@ -2,11 +2,12 @@ import db from "@/lib/db";
 import { NextResponse } from "next/server";
 
 export async function GET(request, { params: { id } }) {
+  
   try {
     const user = await db.users.findUnique({
-      where: { id, role:"FARMER" },
+      where: { id },
     });
-    console.log("Received user:", user)
+
     return NextResponse.json(user);
   } catch (error) {
     return NextResponse.json(

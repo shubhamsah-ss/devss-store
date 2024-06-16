@@ -12,6 +12,7 @@ import ImgUploader from "@/components/formInputs/ImgUploader";
 import SubmitBtn from "@/components/formInputs/SubmitBtn";
 import { makePostRequest } from "@/lib/apiRequest";
 import { generateSlug } from "@/lib/generateSlug";
+import { generateUserCode } from "@/lib/generateUserCode";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -60,13 +61,17 @@ const NewProduct = () => {
       markets: [],
       farmer: [],
       category: [],
+      isWholesale: false,
     },
   });
 
   async function submitHandler(data) {
     const slug = generateSlug(data.title);
+    const productCode = generateUserCode("DEVSS", data.title);
     data.slug = slug;
     data.tags = tags;
+    data.qty = 1;
+    data.productCode = productCode;
 
     if (file) {
       data.image = file;
@@ -106,7 +111,7 @@ const NewProduct = () => {
             required={true}
             error={errors}
             placeholder={"Type the product title"}
-            className="w-full"
+            // className="w-full"
           />
 
           <TextInput
@@ -153,11 +158,34 @@ const NewProduct = () => {
             className="w-full"
           />
 
+          <TextInput
+            label={"Product Stock"}
+            name={"productStock"}
+            type={"number"}
+            register={register}
+            required={true}
+            error={errors}
+            placeholder={"Type the product stock"}
+            className="w-full"
+          />
+
+          <TextInput
+            label={"Unit of measurement (eg Kilograms)"}
+            name={"unit"}
+            type={"text"}
+            register={register}
+            required={true}
+            error={errors}
+            placeholder={"Type the measurement unit"}
+            className="w-full"
+          />
+
           <SelectInput
             label={"Select Farmer"}
             name={"farmerId"}
             register={register}
             required={true}
+            error={errors}
             options={farmer}
             className="w-full"
           />
@@ -167,9 +195,45 @@ const NewProduct = () => {
             name={"categoryId"}
             register={register}
             required={true}
+            error={errors}
             options={category}
             className="w-full"
           />
+
+          <Toggler
+            name={"isWholesale"}
+            register={register}
+            className="sm:col-span-2 sm:w-3/5 flex items-center justify-between"
+            heading="Support Wholesale Selling"
+            toggleLabels={["Supported", "Not Supported"]}
+            watch={watch}
+          />
+
+          {watch("isWholesale") && (
+            <>
+              <TextInput
+                label={"Wholesale Price"}
+                name={"wholesalePrice"}
+                type={"number"}
+                register={register}
+                required={true}
+                error={errors}
+                placeholder={"Type the wholesale price"}
+                className="w-full"
+              />
+
+              <TextInput
+                label={"Minimum wholesale quantity"}
+                name={"wholesaleQty"}
+                type={"number"}
+                register={register}
+                required={true}
+                error={errors}
+                placeholder={"Type the wholesale quantity"}
+                className="w-full"
+              />
+            </>
+          )}
 
           <AddArrayItem
             name={"tags"}

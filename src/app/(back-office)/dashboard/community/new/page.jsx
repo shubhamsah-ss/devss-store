@@ -27,7 +27,7 @@ class Category {
 const NewTraining = () => {
   const [file, setFile] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [value, setValue] = useState("")
+  const [value, setValue] = useState("");
 
   const categories = [];
 
@@ -46,7 +46,7 @@ const NewTraining = () => {
   } = useForm({
     defaultValues: {
       isActive: true,
-    }
+    },
   });
 
   async function submitHandler(data) {
@@ -58,7 +58,7 @@ const NewTraining = () => {
       console.log(data);
       makePostRequest(setLoading, "api/community", data, "Training", reset);
       setFile([]);
-      setValue("")
+      setValue("");
     } else toast.error("No image is selected");
   }
 
@@ -90,6 +90,7 @@ const NewTraining = () => {
             name={"categoryId"}
             register={register}
             required={true}
+            error={errors}
             options={categories}
             className="w-full"
           />
@@ -111,7 +112,7 @@ const NewTraining = () => {
             onChange={setValue}
             placeholder={"Enter the blog..."}
           />
-          
+
           <Toggler
             name={"isActive"}
             register={register}
@@ -120,7 +121,6 @@ const NewTraining = () => {
             toggleLabels={["Active", "Draft"]}
             watch={watch}
           />
-          
         </div>
 
         <ImgUploader

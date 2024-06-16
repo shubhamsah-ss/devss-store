@@ -10,7 +10,6 @@ import {
 import { Bell, LayoutDashboard, LogOut, Menu, Settings, X } from "lucide-react";
 import { useTheme } from "next-themes";
 import Image from "next/image";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import ThemeSwitcher from "../ThemeSwitcher";
 
@@ -24,33 +23,31 @@ const Navbar = ({ onOpenChange }) => {
     }, [theme]);
   return (
     <header
-      className={`flex items-center justif  y-between p-5 drop-shadow-lg bg-slate-100
+      className={`flex items-center justify-between p-5 drop-shadow-lg bg-slate-100
     dark:bg-slate-800 h-20 fixed top-0 w-full dark:text-green-600`}
     >
       {/* ICONS */}
-      <div className="flex items-center w-2/3">
+      <div className="flex items-center">
       <  button
+          className="md:order-2"
           onClick={() => onOpenChange((prev) => !prev)}
         >
           <Menu className="ms-2" />
         </button>
-        <Link
-          className="dark:text-slate-500 text-center flex justify-center items-center w-full md:w-1/6"
-          href={"/dashboard"}
-        >
+        
           <Image
             src={imgSrc}
             alt="DevSS"
             width={100}
             height={100}
             priority={true}
-            className={`w-auto h-24 mt-4 `}
+            className={`w-auto pointer-events-none select-none`}
             style={{ aspectRatio: "3/2" }}
           />
-        </Link>
+
       </div>
       {/* 3 ICONS */}
-      <div className="flex w-1/2 justify-end gap-6">
+      <div className="flex justify-end gap-3 md:gap-5">
         {/* THEME CHANGER */}
         <ThemeSwitcher />
 

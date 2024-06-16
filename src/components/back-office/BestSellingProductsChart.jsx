@@ -29,12 +29,21 @@ const BestSellingProductsChart = () => {
         ],
     }
 
+    const options = {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'top',
+        },
+      },
+    };
+
   return (
     <div className='rounded-xl p-5 shadow-lg bg-slate-100 dark:bg-slate-800'>
         <h2 className='text-xl font-bold mb-5'>Best Selling Products</h2>
         
         {/* CHART */}
-        <Pie data={data} />
+        <Pie data={data} options={options} />
     </div>
   )
 }

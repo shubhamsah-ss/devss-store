@@ -114,12 +114,12 @@ const Sidebar = ({ openSidebar, onOpenChange }) => {
   return (
     <aside
       className={`${
-        openSidebar ? "w-60" : "w-0 md:w-24"
-      } dark:bg-slate-800 h-screen overflow-auto
+        openSidebar ? "w-48" : "w-0 md:w-20"
+      } dark:bg-slate-800 min-h-screen
       drop-shadow-lg bg-slate-100 z-20
     dark:text-slate-50 fixed left-0 transition-all delay-100 mt-20 scroll`}
     >
-      <div className="space-y-1 flex flex-col overflow-y-auto h-full">
+      <div className="space-y-1 flex flex-col overflow-auto h-[90vh]">
         {navItems.map((nav, i) => {
           if (nav.child) {
             const isParentActive = nav.child.some((childNav) =>
@@ -141,6 +141,7 @@ const Sidebar = ({ openSidebar, onOpenChange }) => {
                     isParentActive &&
                     "text-yellow-600 dark:text-green-600 border-l-yellow-600 dark:border-l-green-600 bg-white dark:bg-slate-900"
                   }`}
+                  title={nav.label}
                 >
                   {nav.icon}
                   {openSidebar && nav.label}
@@ -161,6 +162,7 @@ const Sidebar = ({ openSidebar, onOpenChange }) => {
                         active.startsWith(nav.path) &&
                         "text-yellow-600 dark:text-green-600"
                       }`}
+                      title={nav.label}
                     >
                       {nav.icon} {openSidebar && nav.label}
                     </Link>
@@ -181,6 +183,7 @@ const Sidebar = ({ openSidebar, onOpenChange }) => {
               key={i}
               onClick={() => onOpenChange(false)}
               href={nav.path}
+              title={nav.label}
             >
               {nav.icon}
               {openSidebar && nav.label}

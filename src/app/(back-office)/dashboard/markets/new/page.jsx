@@ -66,12 +66,13 @@ const NewMarket = () => {
           />
 
           <SelectInput
+            label={"Select Category"}
             name={"categoryId"}
             register={register}
-            label={"Select Categories"}
-            className="w-full"
+            required={true}
+            error={errors}
             options={categories}
-            multiple={true}
+            className="w-full"
           />
 
           <TextArea
